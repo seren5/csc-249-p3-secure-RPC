@@ -28,7 +28,7 @@ SERVER_PORT = args.server_port  # Port to listen on (non-privileged ports are > 
 
 # Format and return a certificate containing the server's socket information and public key
 def format_certificate(public_key):
-    unsigned_certificate = '' # replace this line
+    unsigned_certificate = f"{SERVER_IP}:{SERVER_PORT}:{public_key}" # replace this line
     print(f"Prepared the formatted unsigned certificate '{unsigned_certificate}'")
     return unsigned_certificate
 
@@ -59,15 +59,40 @@ def TLS_handshake_server(connection):
     ## Instructions ##
     # Fill this function in with the TLS handshake:
     #  * Receive a request for a TLS handshake from the client
+
+    request_for_handshake = connection.recv(1024).decode('utf-8')
+    counter = 0
+    while request_for_handshake is None: # In case no request is received
+        print("No request for a TLS handshake received from the client, please try again.")
+        counter += counter
+        if counter == 10: # So it doesn't enter an infinite loop
+            print("Still no request received, exiting...")
+            quit()
+        request_for_handshake = connection.recv(1024).decode('utf-8') # Check if there's anything received again
+
+    print("Received request for TLS handshake from client")
+
     #  * Send a signed certificate to the client
     #    * A signed certificate variable should be available as 'signed_certificate'
     print("Sending signed certificate " + signed_certificate + " to the client")
-    connection.sendall(bytes('$' + signed_certificate, 'utf-8'))
+    connection.sendall(bytes(signed_certificate, 'utf-8'))
+
     #  * Receive an encrypted symmetric key from the client
     print("Receiving an encrypted symmetric key from the client")
     encrypted_symmetric_key = connection.recv(1024).decode('utf-8')
+    
+    counter = 0
+    while encrypted_symmetric_key is None: # In case no key is received
+        print("No encrypted symmetric key received from the client, please try again.")
+        counter += counter
+        if counter == 10: # So it doesn't enter an infinite loop
+            print("Still no key received, exiting...")
+            quit()
+        encrypted_symmetric_key = connection.recv(1024).decode('utf-8') # Check if there's anything received again
+
     #  * Decrypt and return the symmetric key for use in further communications with the client
-    return encrypted_symmetric_key
+    decrypted_symmetric_key = cryptgraphy_simulator.symmetric_decrypt(encrypted_symmetric_key, )
+    return decrypted_symmetric_key
 
 def process_message(message):
     # Change this function to change the service your server provides

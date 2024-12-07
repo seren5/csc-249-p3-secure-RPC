@@ -51,11 +51,34 @@ def TLS_handshake_client(connection, server_ip=SERVER_IP, server_port=SERVER_POR
     ## Instructions ##
     # Fill this function in with the TLS handshake:
     #  * Receive a signed certificate from the server
+    signed_certificate = connection.recv(1024).decode('utf-8')
+    
+    counter = 0
+    while signed_certificate is None: # In case no signed certificate is received
+        print("No signed certificate received from the server, please try again.")
+        counter += counter
+        if counter == 10: # So it doesn't enter an infinite loop
+            print("Still no certificate received, exiting...")
+            quit()
+        signed_certificate = connection.recv(1024).decode('utf-8') # Check if there's anything received again
+
+    
+
     #  * Request a TLS handshake from the server
+        # ??
+    
     #  * Verify the certificate with the certificate authority's public key
     #    * Use cryptography_simulator.verify_certificate()
+    verification = cryptgraphy_simulator.verify_certificate(CA_public_key, signed_certificate)
     #  * Extract the server's public key, IP address, and port from the certificate
+    certificate_parts = signed_certificate.split(':')
+    server_ip = certificate_parts[0]
+    server_port = int(certificate_parts[1])
+    server_public_key = eval(certificate_parts[2])
+
     #  * Verify that you're communicating with the port and IP specified in the certificate
+
+    
     #  * Generate a symmetric key to send to the server
     #    * Use cryptography_simulator.generate_symmetric_key()
     #  * Use the server's public key to encrypt the symmetric key

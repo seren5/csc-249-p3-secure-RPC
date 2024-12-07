@@ -91,7 +91,7 @@ def TLS_handshake_server(connection):
         encrypted_symmetric_key = connection.recv(1024).decode('utf-8') # Check if there's anything received again
 
     #  * Decrypt and return the symmetric key for use in further communications with the client
-    decrypted_symmetric_key = cryptgraphy_simulator.symmetric_decrypt(encrypted_symmetric_key, )
+    decrypted_symmetric_key = cryptgraphy_simulator.private_key_decrypt(private_key, encrypted_symmetric_key)
     return decrypted_symmetric_key
 
 def process_message(message):

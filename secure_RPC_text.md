@@ -16,7 +16,7 @@ The unsigned certificate contains a '$' for the certificate authority to read, t
 \${Server_IP}:{Server_Port}:{Public_Key} should be the format
 
 ## Example Output
-Check command-line trace
+Check command_line_trace.md
 
 ## Walkthrough
 First, the client initiates the handshake by sending a message to the VPN, which forwards it to the server.

@@ -32,4 +32,5 @@ Messages aren't sent directly between the client and server, but go through the 
 2. The encryption/decryption system may be weak, and the generated keys aren't random, making it easier for attackers to make their way in
 
 ## Acknowledgments
-I consulted with Tanya, who helped me think through the client, and Isabelle, who helped me think through the server. 
+I consulted with Tanya, who helped me think through the client, and Isabelle, who helped me think through the server.
+Ari helped me with an issue I had where I didn't strip the IP or turn the port into an int, and gave me a print of the client not being verified to be communicating the with certificate specified port and IP.

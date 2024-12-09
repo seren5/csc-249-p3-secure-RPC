@@ -80,7 +80,7 @@ def TLS_handshake_client(connection, server_ip=SERVER_IP, server_port=SERVER_POR
     key_server_ip, key_server_port, public_key_s = verification.split(":")
 
     #  * Verify that you're communicating with the port and IP specified in the certificate
-    if key_server_ip == server_ip and key_server_port == server_port:
+    if key_server_ip.strip() == server_ip and int(key_server_port) == server_port:
         print("The client is verified to be communicating with the port and IP specified in the certificate")
     else:
         print("The client is not verified to be communicating with the port and IP specified in the certificate")
